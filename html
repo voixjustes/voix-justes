@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Le blog citoyen pour comprendre et débattre de la politique">
+  <meta name="author" content="Regards Politiques">
+  <title>Regards Politiques</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    header {
+      background-color: #002b5c;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background-color: #0056a3;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    article {
+      margin-bottom: 2rem;
+    }
+    .pagination {
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .pagination button {
+      margin: 0 5px;
+      padding: 0.5rem 1rem;
+      background-color: #0056a3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .support, .newsletter, .social, .footer, .admin-panel {
+      text-align: center;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #eef0f2;
+      border-radius: 8px;
+    }
+    .support a, .social a {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #0056a3;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .newsletter input[type="email"], .admin-panel input, .admin-panel textarea {
+      padding: 0.5rem;
+      width: 80%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+    .newsletter button, .admin-panel button {
+      padding: 0.5rem 1rem;
+      background-color: #0056a3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <header id="top">
+    <h1>Regards Politiques</h1>
+    <p>Le blog citoyen pour comprendre et débattre</p>
+    <nav>
+      <a href="#top">Accueil</a>
+      <a href="#articles">Articles</a>
+      <a href="#soutien">Soutenir</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="articles">
+      <div id="article-list"></div>
+      <div class="pagination">
+        <button onclick="changePage(-1)">Précédent</button>
+        <span id="page-info"></span>
+        <button onclick="changePage(1)">Suivant</button>
+      </div>
+    </section>
+
+    <section class="admin-panel">
+      <h2>Admin – Ajouter un article</h2>
+      <input type="text" id="newTitle" placeholder="Titre" /><br />
+      <input type="text" id="newDate" placeholder="Date (ex. 20 juin 2025)" /><br />
+      <textarea id="newContent" placeholder="Contenu" rows="4"></textarea><br />
+      <button onclick="addArticle()">Ajouter</button>
+      <button onclick="clearArticles()">Effacer tous</button>
+    </section>
+
+    <section class="support" id="soutien">
+      <h2>Soutenir le blog</h2>
+      <p>Ce blog est indépendant et 100% gratuit. Tu peux m'aider à le faire vivre !</p>
+      <a href="https://www.patreon.com" target="_blank" rel="noopener noreferrer" aria-label="Soutenir sur Patreon">💖 Soutenir sur Patreon</a>
+      <a href="https://www.tipeee.com" target="_blank" rel="noopener noreferrer" aria-label="Faire un don sur Tipeee">🤝 Faire un don sur Tipeee</a>
+    </section>
+
+    <section class="newsletter">
+      <h2>Inscris-toi à la newsletter</h2>
+      <p>Reçois les nouveaux articles et analyses directement par mail.</p>
+      <form action="#" method="post">
+        <input type="email" name="email" placeholder="Ton adresse email" required>
+        <br />
+        <button type="submit">S'inscrire</button>
+      </form>
+    </section>
+
+    <section class="social">
+      <h2>Partager le blog</h2>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://voixjustes.github.io/voix-justes/" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url=https://voixjustes.github.io/voix-justes/&text=Découvre ce blog politique !" target="_blank" rel="noopener noreferrer">🐦 Twitter</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Regards Politiques – Tous droits réservés.</p>
+    <p><a href="#">Mentions légales</a> | <a href="#">Politique de confidentialité</a></p>
+  </footer>
+
+  <script>
+    const saved = JSON.parse(localStorage.getItem('articles')) || [];
+    const defaultArticles = [
+      {
+        title: "Pourquoi la politique nous concerne tous",
+        date: "19 juin 2025",
+        content: "Beaucoup pensent que la politique ne les touche pas. Pourtant, chaque décision, chaque réforme, chaque vote a un impact sur notre quotidien. Ce blog a pour but de décrypter, informer et surtout ouvrir le débat."
+      },
+      {
+        title: "Comprendre les institutions françaises",
+        date: "20 juin 2025",
+        content: "Le fonctionnement des institutions françaises peut paraître complexe. Assemblée nationale, Sénat, Conseil constitutionnel... Qui fait quoi, comment, et pourquoi cela nous concerne-t-il ? Ce guide te donnera les bases pour mieux suivre l’actualité politique."
+      },
+      {
+        title: "Élections municipales : enjeux locaux, impacts nationaux",
+        date: "21 juin 2025",
+        content: "Trop souvent ignorées, les élections municipales sont pourtant essentielles : elles touchent directement à notre quotidien. Transport, logement, environnement local... Plongeons dans les enjeux cruciaux de ce scrutin."
+      }
+    ];
+
+    const articles = saved.length ? saved : defaultArticles;
+    let currentPage = 1;
+    const articlesPerPage = 1;
+
+    function renderArticles() {
+      const start = (currentPage - 1) * articlesPerPage;
+      const end = start + articlesPerPage;
+      const visibleArticles = articles.slice(start, end);
+      const container = document.getElementById("article-list");
+      container.innerHTML = visibleArticles.map(article => `
+        <article>
+          <h2>${article.title}</h2>
+          <p><em>Publié le ${article.date}</em></p>
+          <p>${article.content}</p>
+        </article>
+      `).join("");
+
+      const pageInfo = document.getElementById("page-info");
+      const totalPages = Math.ceil(articles.length / articlesPerPage);
+      pageInfo.textContent = `Page ${currentPage} sur ${totalPages}`;
+    }
+
+    function changePage(direction) {
+      const totalPages = Math.ceil(articles.length / articlesPerPage);
+      currentPage += direction;
+      if (currentPage < 1) currentPage = 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      renderArticles();
+    }
+
+    function addArticle() {
+      const title = document.getElementById("newTitle").value.trim();
+      const date = document.getElementById("newDate").value.trim();
+      const content = document.getElementById("newContent").value.trim();
+      if (title && date && content) {
+        articles.unshift({ title, date, content });
+        localStorage.setItem("articles", JSON.stringify(articles));
+        currentPage = 1;
+        renderArticles();
+        document.getElementById("newTitle").value = "";
+        document.getElementById("newDate").value = "";
+        document.getElementById("newContent").value = "";
+      }
+    }
+
+    function clearArticles() {
+      localStorage.removeItem("articles");
+      location.reload();
+    }
+
+    renderArticles();
+  </script>
+</body>
+</html>

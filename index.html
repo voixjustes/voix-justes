@@ -2,196 +2,433 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Le blog citoyen pour comprendre et débattre de la politique">
-  <meta name="author" content="Regards Politiques">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Le blog citoyen pour comprendre et débattre de la politique" />
+  <meta name="author" content="Regards Politiques" />
   <title>Regards Politiques</title>
-  <link rel="icon" href="favicon.ico">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    html {
-      scroll-behavior: smooth;
+    /* Reset simple */
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
     body {
       margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: #f5f5f5;
-      color: #222;
+      font-family: 'Inter', sans-serif;
+      background: #fafafa;
+      color: #2c2c2c;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     header {
-      background-color: #002b5c;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #ff6f61; /* corail chaud */
       color: white;
-      padding: 1rem;
-      text-align: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 1.2rem;
     }
-    nav {
-      background-color: #0056a3;
-      padding: 0.5rem;
-      text-align: center;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.5rem;
+      cursor: default;
     }
     nav a {
       color: white;
-      margin: 0 1rem;
       text-decoration: none;
-      font-weight: bold;
+      margin-left: 1.5rem;
+      font-weight: 600;
+      transition: opacity 0.3s ease;
     }
-    .container {
+    nav a:hover {
+      opacity: 0.8;
+    }
+    main {
+      margin-top: 72px; /* hauteur header */
+      flex-grow: 1;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 2rem 1rem;
+      width: 100%;
+    }
+    section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.05);
       padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-bottom: 2.5rem;
+      transition: box-shadow 0.3s ease;
     }
-    article {
-      margin-bottom: 2rem;
+    section:hover {
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.1);
+    }
+    h2 {
+      margin-top: 0;
+      font-weight: 700;
+      color: #ff6f61;
+      margin-bottom: 1.2rem;
+      font-size: 1.8rem;
+      letter-spacing: 0.02em;
+    }
+    #article-list article {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+    #article-list article:last-child {
+      border: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    #article-list article h3 {
+      margin: 0 0 0.3rem 0;
+      font-weight: 600;
+      color: #333;
+    }
+    #article-list article time {
+      font-size: 0.85rem;
+      color: #999;
+    }
+    #article-list article p {
+      margin-top: 0.5rem;
+      color: #555;
     }
     .pagination {
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 1rem;
     }
     .pagination button {
-      margin: 0 5px;
-      padding: 0.5rem 1rem;
-      background-color: #0056a3;
-      color: white;
+      background: #ff6f61;
       border: none;
-      border-radius: 4px;
+      padding: 0.6rem 1.2rem;
+      margin: 0 6px;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
       cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 3px 8px rgb(255 111 97 / 0.4);
     }
-    .support, .newsletter, .social, .footer, .admin-panel {
+    .pagination button:hover:not(:disabled) {
+      background: #e1584f;
+    }
+    .pagination button:disabled {
+      opacity: 0.4;
+      cursor: default;
+      box-shadow: none;
+    }
+    .support {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      margin-top: 2rem;
-      padding: 1rem;
-      background-color: #eef0f2;
-      border-radius: 8px;
     }
-    .support a, .social a {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #0056a3;
+    .support p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      max-width: 480px;
+    }
+    .support a {
+      background: #ff6f61;
       color: white;
       text-decoration: none;
-      border-radius: 5px;
+      font-weight: 700;
+      padding: 0.75rem 1.6rem;
+      margin: 0.3rem;
+      border-radius: 30px;
+      box-shadow: 0 3px 8px rgb(255 111 97 / 0.5);
+      transition: background-color 0.3s ease;
+      width: 180px;
+      text-align: center;
     }
-    .newsletter input[type="email"], .admin-panel input, .admin-panel textarea {
-      padding: 0.5rem;
-      width: 80%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 0.5rem;
-    }<!-- À placer juste avant la section admin-panel -->
-<section class="admin-login" id="admin-login-section">
-  <h2>Connexion Admin</h2>
-  <input type="text" id="admin-username" placeholder="Identifiant" /><br />
-  <input type="password" id="admin-password" placeholder="Mot de passe" /><br />
-  <button onclick="loginAdmin()">Se connecter</button>
-  <p id="login-message" style="color: red;"></p>
-</section>
-
-<section class="admin-panel" id="admin-panel" style="display:none">
-  <h2>Admin – Ajouter un article</h2>
-  <input type="text" id="newTitle" placeholder="Titre" /><br />
-  <input type="text" id="newDate" placeholder="Date (ex. 20 juin 2025)" /><br />
-  <textarea id="newContent" placeholder="Contenu" rows="4"></textarea><br />
-  <button onclick="addArticle()">Ajouter</button>
-  <button onclick="clearArticles()">Effacer tous</button>
-</section>    .newsletter button, .admin-panel button {
-      padding: 0.5rem 1rem;
-      background-color: #0056a3;
-      color: white;
+    .support a:hover {
+      background: #e1584f;
+    }
+    .newsletter form {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .newsletter input[type="email"] {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border: 2px solid #ddd;
+      border-radius: 30px;
+      flex-grow: 1;
+      max-width: 320px;
+      transition: border-color 0.3s ease;
+    }
+    .newsletter input[type="email"]:focus {
+      border-color: #ff6f61;
+      outline: none;
+    }
+    .newsletter button {
+      background: #ff6f61;
       border: none;
-      border-radius: 4px;
+      padding: 0.75rem 1.8rem;
+      color: white;
+      font-weight: 700;
+      border-radius: 30px;
       cursor: pointer;
-      margin: 0.5rem;
+      box-shadow: 0 3px 8px rgb(255 111 97 / 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .newsletter button:hover {
+      background: #e1584f;
+    }
+    .social {
+      text-align: center;
+    }
+    .social a {
+      display: inline-block;
+      margin: 0 12px;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #ff6f61;
+      transition: color 0.3s ease;
+    }
+    .social a:hover {
+      color: #e1584f;
+    }
+    .admin-login {
+      max-width: 360px;
+      margin: 0 auto 2rem auto;
+      background: #fff3f2;
+      border: 2px solid #ff6f61;
+      border-radius: 12px;
+      padding: 1.8rem 2rem;
+      box-shadow: 0 4px 15px rgb(255 111 97 / 0.3);
+      text-align: center;
+    }
+    .admin-login h2 {
+      margin-bottom: 1rem;
+      color: #d0453a;
+      font-size: 1.6rem;
+    }
+    .admin-login input {
+      width: 100%;
+      padding: 0.6rem 0.9rem;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      border: 1.5px solid #ff6f61;
+      border-radius: 30px;
+      transition: border-color 0.3s ease;
+    }
+    .admin-login input:focus {
+      border-color: #e1584f;
+      outline: none;
+    }
+    .admin-login button {
+      margin-top: 1rem;
+      background: #ff6f61;
+      border: none;
+      padding: 0.7rem 1.6rem;
+      font-weight: 700;
+      color: white;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 3px 8px rgb(255 111 97 / 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .admin-login button:hover {
+      background: #e1584f;
+    }
+    .admin-login #login-message {
+      margin-top: 0.8rem;
+      font-weight: 600;
+      color: #b33a34;
+      min-height: 1.2em;
+    }
+    .admin-panel {
+      max-width: 600px;
+      margin: 0 auto 3rem auto;
+      background: #fff3f2;
+      border: 2px solid #ff6f61;
+      border-radius: 12px;
+      padding: 2rem 2.4rem;
+      box-shadow: 0 4px 15px rgb(255 111 97 / 0.3);
+    }
+    .admin-panel h2 {
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      font-size: 1.7rem;
+      color: #d0453a;
+    }
+    .admin-panel input,
+    .admin-panel textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 1rem;
+      border: 1.5px solid #ff6f61;
+      border-radius: 30px;
+      resize: vertical;
+      transition: border-color 0.3s ease;
+    }
+    .admin-panel input:focus,
+    .admin-panel textarea:focus {
+      border-color: #e1584f;
+      outline: none;
+    }
+    .admin-panel button {
+      background: #ff6f61;
+      border: none;
+      color: white;
+      font-weight: 700;
+      padding: 0.75rem 1.6rem;
+      margin-right: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgb(255 111 97 / 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .admin-panel button:hover {
+      background: #e1584f;
     }
     footer {
       text-align: center;
-      padding: 1rem;
+      padding: 1.5rem 1rem;
       font-size: 0.9rem;
-      color: #555;
+      color: #999;
+      background: #f0f0f0;
+      border-top: 1px solid #ddd;
+      margin-top: auto;
+    }
+    footer a {
+      color: #ff6f61;
+      text-decoration: none;
+      margin: 0 0.5rem;
+      font-weight: 600;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    /* Responsive */
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        gap: 0.6rem;
+        font-size: 1rem;
+      }
+      nav a {
+        margin-left: 0.8rem;
+        font-size: 0.9rem;
+      }
+      main {
+        padding: 1.5rem 1rem;
+      }
+      .admin-panel {
+        padding: 1.5rem 1.6rem;
+      }
     }
   </style>
 </head>
 <body>
-  <header id="top">
+  <header id="top" role="banner">
     <h1>Regards Politiques</h1>
-    <p>Le blog citoyen pour comprendre et débattre</p>
-    <nav>
+    <nav role="navigation" aria-label="Menu principal">
       <a href="#top">Accueil</a>
       <a href="#articles">Articles</a>
       <a href="#soutien">Soutenir</a>
     </nav>
   </header>
 
-  <main class="container">
-    <section id="articles">
-      <div id="article-list"></div>
-      <div class="pagination">
-        <button onclick="changePage(-1)">Précédent</button>
-        <span id="page-info"></span>
-        <button onclick="changePage(1)">Suivant</button>
+  <main role="main">
+    <!-- Admin login section -->
+    <section class="admin-login" id="admin-login-section" aria-label="Connexion administrateur">
+      <h2>Connexion Admin</h2>
+      <input type="text" id="admin-username" placeholder="Identifiant" aria-label="Identifiant admin" />
+      <input type="password" id="admin-password" placeholder="Mot de passe" aria-label="Mot de passe admin" />
+      <button type="button" onclick="loginAdmin()">Se connecter</button>
+      <p id="login-message" aria-live="polite"></p>
+    </section>
+
+    <!-- Admin panel, caché par défaut -->
+    <section class="admin-panel" id="admin-panel" style="display:none" aria-label="Panneau administrateur">
+      <h2>Ajouter un article</h2>
+      <input type="text" id="newTitle" placeholder="Titre" aria-label="Titre de l'article" />
+      <input type="text" id="newDate" placeholder="Date (ex. 20 juin 2025)" aria-label="Date de l'article" />
+      <textarea id="newContent" placeholder="Contenu" rows="5" aria-label="Contenu de l'article"></textarea>
+      <button type="button" onclick="addArticle()">Ajouter</button>
+      <button type="button" onclick="clearArticles()">Effacer tous</button>
+    </section>
+
+    <!-- Articles -->
+    <section id="articles" aria-label="Liste des articles">
+      <h2>Articles récents</h2>
+      <div id="article-list" role="list"></div>
+      <div class="pagination" aria-label="Navigation entre pages d'articles">
+        <button id="prevPage" onclick="changePage(-1)">Précédent</button>
+        <span id="page-info" aria-live="polite"></span>
+        <button id="nextPage" onclick="changePage(1)">Suivant</button>
       </div>
     </section>
 
-    <section class="admin-panel">
-      <h2>Admin – Ajouter un article</h2>
-      <input type="text" id="newTitle" placeholder="Titre" /><br />
-      <input type="text" id="newDate" placeholder="Date (ex. 20 juin 2025)" /><br />
-      <textarea id="newContent" placeholder="Contenu" rows="4"></textarea><br />
-      <button onclick="addArticle()">Ajouter</button>
-      <button onclick="clearArticles()">Effacer tous</button>
-    </section>
-
-    <section class="support" id="soutien">
+    <!-- Support -->
+    <section class="support" id="soutien" aria-label="Soutenir le blog">
       <h2>Soutenir le blog</h2>
       <p>Ce blog est indépendant et 100% gratuit. Tu peux m'aider à le faire vivre !</p>
-      <a href="https://www.patreon.com" target="_blank" rel="noopener noreferrer" aria-label="Soutenir sur Patreon">💖 Soutenir sur Patreon</a>
-      <a href="https://fr.tipeee.com/user/fant-2" target="_blank" rel="noopener noreferrer" aria-label="Faire un don sur Tipeee">🤝 Faire un don sur Tipeee</a>
+      <a href="https://www.patreon.com" target="_blank" rel="noopener noreferrer" aria-label="Soutenir sur Patreon">💖 Patreon</a>
+      <a href="https://fr.tipeee.com/user/fant-2" target="_blank" rel="noopener noreferrer" aria-label="Faire un don sur Tipeee">🤝 Tipeee</a>
     </section>
 
-    <section class="newsletter">
+    <!-- Newsletter -->
+    <section class="newsletter" aria-label="Inscription à la newsletter">
       <h2>Inscris-toi à la newsletter</h2>
       <p>Reçois les nouveaux articles et analyses directement par mail.</p>
-      <form action="#" method="post">
-        <input type="email" name="email" placeholder="Ton adresse email" required>
-        <br />
+      <form action="#" method="post" onsubmit="alert('Merci pour votre inscription !'); return false;">
+        <input type="email" name="email" placeholder="Ton adresse email" required aria-label="Adresse email" />
         <button type="submit">S'inscrire</button>
       </form>
     </section>
 
-    <section class="social">
+    <!-- Social -->
+    <section class="social" aria-label="Partager le blog">
       <h2>Partager le blog</h2>
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://voixjustes.github.io/voix-justes/" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
-      <a href="https://twitter.com/intent/tweet?url=https://voixjustes.github.io/voix-justes/&text=Découvre ce blog politique !" target="_blank" rel="noopener noreferrer">🐦 Twitter</a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://voixjustes.github.io/voix-justes/" target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook">📘</a>
+      <a href="https://twitter.com/intent/tweet?url=https://voixjustes.github.io/voix-justes/&text=Découvre ce blog politique !" target="_blank" rel="noopener noreferrer" aria-label="Partager sur Twitter">🐦</a>
     </section>
   </main>
 
-  <footer>
+  <footer role="contentinfo">
     <p>&copy; 2025 Regards Politiques – Tous droits réservés.</p>
     <p><a href="#">Mentions légales</a> | <a href="#">Politique de confidentialité</a></p>
   </footer>
-// --- Authentification admin ---
-const ADMIN_USER = "Loukili100";
-const ADMIN_PASS = "Imranchain6";
 
-function loginAdmin() {
-  const user = document.getElementById('admin-username').value;
-  const pass = document.getElementById('admin-password').value;
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
-    document.getElementById('admin-login-section').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'block';
-    document.getElementById('login-message').textContent = '';
-  } else {
-    document.getElementById('login-message').textContent = 'Identifiant ou mot de passe incorrect.';
-  }
-}
+  <script>
+    // Admin login logic
+    const ADMIN_USER = "Loukili100";
+    const ADMIN_PASS = "Imranchain6";
 
-// Optionnel : cacher la section admin si JS est désactivé
-document.getElementById('admin-panel').style.display = 'none';  <script>
+    function loginAdmin() {
+      const user = document.getElementById('admin-username').value.trim();
+      const pass = document.getElementById('admin-password').value.trim();
+      const msg = document.getElementById('login-message');
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        document.getElementById('admin-login-section').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        msg.textContent = '';
+      } else {
+        msg.textContent = 'Identifiant ou mot de passe incorrect.';
+      }
+    }
+
+    // Articles data & pagination
     const saved = JSON.parse(localStorage.getItem('articles')) || [];
     const defaultArticles = [
       {
@@ -202,20 +439,73 @@ document.getElementById('admin-panel').style.display = 'none';  <script>
       {
         title: "Comprendre les institutions françaises",
         date: "20 juin 2025",
-        content: "Le fonctionnement des institutions françaises peut paraître complexe. Assemblée nationale, Sénat, Conseil constitutionnel... Qui fait quoi, comment, et pourquoi cela nous concerne-t-il ? Ce guide te donnera les bases pour mieux suivre l’actualité politique."
-      },
-      {
-        title: "Élections municipales : enjeux locaux, impacts nationaux",
-        date: "21 juin 2025",
-        content: "Trop souvent ignorées, les élections municipales sont pourtant essentielles : elles touchent directement à notre quotidien. Transport, logement, environnement local... Plongeons dans les enjeux cruciaux de ce scrutin."
+        content: "Le système politique français peut paraître complexe. Nous allons explorer ensemble son fonctionnement, les rôles des différents acteurs, et pourquoi cela importe."
       }
     ];
+    let articles = saved.length ? saved : defaultArticles;
 
-    const articles = saved.length ? saved : defaultArticles;
+    const perPage = 3;
     let currentPage = 1;
-    const articlesPerPage = 1;
 
     function renderArticles() {
-      const start = (currentPage - 1) * articlesPerPage;
-      const end = start + articlesPerPage;
-      const visibl
+      const container = document.getElementById('article-list');
+      container.innerHTML = '';
+      const start = (currentPage - 1) * perPage;
+      const end = start + perPage;
+      const pageArticles = articles.slice(start, end);
+
+      pageArticles.forEach((a, i) => {
+        const article = document.createElement('article');
+        article.setAttribute('role', 'listitem');
+        article.innerHTML = `
+          <h3>${a.title}</h3>
+          <time datetime="${a.date}">${a.date}</time>
+          <p>${a.content}</p>
+        `;
+        container.appendChild(article);
+      });
+
+      // Pagination controls
+      document.getElementById('prevPage').disabled = currentPage === 1;
+      document.getElementById('nextPage').disabled = currentPage >= Math.ceil(articles.length / perPage);
+      document.getElementById('page-info').textContent = `Page ${currentPage} / ${Math.ceil(articles.length / perPage)}`;
+    }
+
+    function changePage(delta) {
+      const maxPage = Math.ceil(articles.length / perPage);
+      currentPage = Math.min(Math.max(1, currentPage + delta), maxPage);
+      renderArticles();
+    }
+
+    function addArticle() {
+      const title = document.getElementById('newTitle').value.trim();
+      const date = document.getElementById('newDate').value.trim();
+      const content = document.getElementById('newContent').value.trim();
+
+      if (!title || !date || !content) {
+        alert('Merci de remplir tous les champs.');
+        return;
+      }
+
+      articles.unshift({ title, date, content });
+      localStorage.setItem('articles', JSON.stringify(articles));
+      renderArticles();
+
+      // Clear form
+      document.getElementById('newTitle').value = '';
+      document.getElementById('newDate').value = '';
+      document.getElementById('newContent').value = '';
+    }
+
+    function clearArticles() {
+      if (confirm('Voulez-vous vraiment supprimer tous les articles ?')) {
+        articles = [];
+        localStorage.removeItem('articles');
+        renderArticles();
+      }
+    }
+
+    renderArticles();
+  </script>
+</body>
+</html>

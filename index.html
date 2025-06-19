@@ -83,8 +83,23 @@
       border: 1px solid #ccc;
       border-radius: 4px;
       margin-bottom: 0.5rem;
-    }
-    .newsletter button, .admin-panel button {
+    }<!-- À placer juste avant la section admin-panel -->
+<section class="admin-login" id="admin-login-section">
+  <h2>Connexion Admin</h2>
+  <input type="text" id="admin-username" placeholder="Identifiant" /><br />
+  <input type="password" id="admin-password" placeholder="Mot de passe" /><br />
+  <button onclick="loginAdmin()">Se connecter</button>
+  <p id="login-message" style="color: red;"></p>
+</section>
+
+<section class="admin-panel" id="admin-panel" style="display:none">
+  <h2>Admin – Ajouter un article</h2>
+  <input type="text" id="newTitle" placeholder="Titre" /><br />
+  <input type="text" id="newDate" placeholder="Date (ex. 20 juin 2025)" /><br />
+  <textarea id="newContent" placeholder="Contenu" rows="4"></textarea><br />
+  <button onclick="addArticle()">Ajouter</button>
+  <button onclick="clearArticles()">Effacer tous</button>
+</section>    .newsletter button, .admin-panel button {
       padding: 0.5rem 1rem;
       background-color: #0056a3;
       color: white;
@@ -159,8 +174,24 @@
     <p>&copy; 2025 Regards Politiques – Tous droits réservés.</p>
     <p><a href="#">Mentions légales</a> | <a href="#">Politique de confidentialité</a></p>
   </footer>
+// --- Authentification admin ---
+const ADMIN_USER = "Loukili100";
+const ADMIN_PASS = "Imranchain6";
 
-  <script>
+function loginAdmin() {
+  const user = document.getElementById('admin-username').value;
+  const pass = document.getElementById('admin-password').value;
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    document.getElementById('admin-login-section').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    document.getElementById('login-message').textContent = '';
+  } else {
+    document.getElementById('login-message').textContent = 'Identifiant ou mot de passe incorrect.';
+  }
+}
+
+// Optionnel : cacher la section admin si JS est désactivé
+document.getElementById('admin-panel').style.display = 'none';  <script>
     const saved = JSON.parse(localStorage.getItem('articles')) || [];
     const defaultArticles = [
       {
